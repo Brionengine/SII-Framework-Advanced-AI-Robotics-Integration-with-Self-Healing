@@ -1,7 +1,7 @@
-# hardware_ai_blocker.py
+# hardware_ai_safety.py
 """
 Hardware-Level AI Blocker - Physical and system-level prevention of AI code execution
-Implements multiple layers of protection to ensure AI cannot run on robot hardware
+Implements multiple layers of protection to ensure AI cannot run on robot hardware. To help ensure safety for A.I.
 """
 
 import os
@@ -546,4 +546,5 @@ if __name__ == "__main__":
     status = ai_blocker.get_blocker_status()
     print("AI Blocker Status:", json.dumps(status, indent=2))
     
+
     print("Hardware AI Blocker initialized and monitoring...")
