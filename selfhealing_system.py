@@ -41,7 +41,7 @@ class SelfHealingSystem:
     - Comprehensive event logging and reporting
     """
 
-    VERSION = "2.0.0"
+    VERSION = "2.0.7"
     SEVERITY_LEVELS = {'info': 0, 'warning': 1, 'critical': 2}
 
     def __init__(self, components: Optional[List[str]] = None):

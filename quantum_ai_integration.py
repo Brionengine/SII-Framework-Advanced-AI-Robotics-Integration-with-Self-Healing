@@ -66,7 +66,7 @@ class QuantumAIInterface:
     Features adaptive learning, multi-modal evaluation, and safety constraints.
     """
 
-    VERSION = "2.0.0"
+    VERSION = "2.0.7"
 
     def __init__(self, consciousness_engine=None):
         self.engine = consciousness_engine or QuantumConsciousnessCore()
