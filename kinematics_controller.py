@@ -1,5 +1,6 @@
 import numpy as np
-from qiskit import QuantumCircuit, Aer, transpile, execute
+from qiskit import QuantumCircuit, transpile
+from qiskit_aer import Aer
 
 class QNEKE:
     def __init__(self, n_joints):
@@ -9,7 +10,7 @@ class QNEKE:
     def optimize_movement(self, current_state):
         self.qc.h(range(len(current_state)))  # Place joints in superposition
         self.qc.measure_all()
-        job = execute(self.qc, self.backend, shots=100)
+        job = self.backend.run(transpile(self.qc, self.backend), shots=100)
         result = job.result().get_counts()
         best = max(result, key=result.get)
         return [int(b) for b in best]  # Quantum-optimized joint state

@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from qiskit import QuantumCircuit, Aer, execute
+from qiskit import QuantumCircuit, transpile
+from qiskit_aer import Aer
 from qiskit.circuit import Parameter
 from qiskit.circuit.library import ZZFeatureMap, RealAmplitudes
 from qiskit_machine_learning.algorithms import VQC

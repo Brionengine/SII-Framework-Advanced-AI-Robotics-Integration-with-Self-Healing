@@ -1,4 +1,5 @@
-from qiskit import QuantumCircuit, Aer, execute
+from qiskit import QuantumCircuit, transpile
+from qiskit_aer import Aer
 import numpy as np
 
 class QBERC:
@@ -17,7 +18,7 @@ class QBERC:
 
     def sense_and_resonate(self, proximity, touch, sound_level):
         input_sum = proximity + touch + sound_level
-        job = execute(self.entangled_emotions, self.backend, shots=1)
+        job = self.backend.run(transpile(self.entangled_emotions, self.backend), shots=1)
         result = job.result().get_counts()
         binary = list(result.keys())[0]
         index = int(binary, 2) % len(self.emotion_labels)

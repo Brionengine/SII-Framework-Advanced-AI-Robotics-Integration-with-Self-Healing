@@ -1,4 +1,5 @@
-from qiskit import QuantumCircuit, Aer, execute
+from qiskit import QuantumCircuit, transpile
+from qiskit_aer import Aer
 import numpy as np
 
 class QuantumConsciousnessCore:
@@ -22,7 +23,7 @@ class QuantumConsciousnessCore:
         
         # Measure the quantum consciousness state
         qc.measure_all()
-        job = execute(qc, self.backend, shots=1000)
+        job = self.backend.run(transpile(qc, self.backend), shots=1000)
         result = job.result().get_counts()
         
         # Find the most probable consciousness state
