@@ -55,28 +55,67 @@ class SelfHealingSystem:
         self.repair_count = 0
         self.total_faults = 0
         self.false_positives = 0
+        self.rollback_count = 0
         self._start_time = time.time()
 
-    def take_snapshot(self):
-        """Save current state as a rollback point."""
+    def take_snapshot(self) -> Dict[str, Any]:
+        """
+        Save current state as a rollback point.
+
+        Snapshots record whether the state was healthy at the time, since a
+        rollback target is only useful if it is a state worth returning to.
+        """
         snapshot = {
             'metrics': dict(self.performance_metrics),
             'status': self.health_status,
             'timestamp': time.time(),
+            'healthy': self.is_healthy(),
         }
         self.snapshots.append(snapshot)
+        return snapshot
+
+    def is_healthy(self) -> bool:
+        """Whether every component currently sits within its threshold."""
+        return all(
+            value <= self.thresholds.get(component, float('inf'))
+            for component, value in self.performance_metrics.items()
+        )
 
     def rollback(self) -> bool:
-        """Rollback to last known good state."""
-        if not self.snapshots:
-            logger.warning("No snapshots available for rollback")
+        """
+        Restore the most recent healthy snapshot.
+
+        This previously popped the newest snapshot, which was wrong twice over.
+        The newest snapshot is taken at the top of the monitoring cycle, so it
+        can be the very state that then went bad -- rolling "back" into the
+        fault. And popping destroyed the rollback point, so a second rollback
+        silently jumped two states and the history drained away.
+
+        Snapshots are left intact here; only the state is restored.
+        """
+        target = None
+        for snapshot in reversed(self.snapshots):
+            if snapshot['healthy']:
+                target = snapshot
+                break
+
+        if target is None:
+            logger.warning("No healthy snapshot available for rollback")
+            self._log_event('rollback_failed', 'System', 'warning',
+                            'No healthy snapshot available')
             return False
-        snapshot = self.snapshots.pop()
-        self.performance_metrics = snapshot['metrics']
-        self.health_status = snapshot['status']
-        logger.info(f"Rolled back to snapshot from {snapshot['timestamp']}")
-        self._log_event('rollback', 'System', 'warning', 'Rolled back to previous snapshot')
+
+        self.performance_metrics = dict(target['metrics'])
+        self.health_status = target['status']
+        self.rollback_count += 1
+        logger.info(f"Rolled back to healthy snapshot from {target['timestamp']}")
+        self._log_event('rollback', 'System', 'warning',
+                        'Rolled back to last known good state')
         return True
+
+    def healthy_snapshot_count(self) -> int:
+        """How many retained snapshots are viable rollback targets."""
+        return sum(1 for s in self.snapshots if s['healthy'])
 
     def _log_event(self, event_type: str, component: str, severity: str, description: str):
         event = HealthEvent(event_type, component, severity, description)
