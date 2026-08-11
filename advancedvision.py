@@ -1,4 +1,9 @@
-import cv2
+from __future__ import annotations
+
+try:
+    import cv2
+except ImportError:  # optional dependency: pip install opencv-python
+    cv2 = None
 
 def start_camera():
     """Capture video from the webcam and detect objects."""

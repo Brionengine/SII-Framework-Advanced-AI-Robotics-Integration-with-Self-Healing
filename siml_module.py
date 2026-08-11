@@ -1,13 +1,44 @@
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from qiskit import QuantumCircuit, transpile
-from qiskit_aer import Aer
-from qiskit.circuit import Parameter
-from qiskit.circuit.library import ZZFeatureMap, RealAmplitudes
+from __future__ import annotations
+
+try:
+    import torch
+except ImportError:  # optional dependency: pip install torch
+    torch = None
+try:
+    import torch.nn as nn
+except ImportError:  # optional dependency: pip install torch
+    nn = None
+try:
+    import torch.optim as optim
+except ImportError:  # optional dependency: pip install torch
+    optim = None
+try:
+    from qiskit import QuantumCircuit, transpile
+except ImportError:  # optional dependency: pip install qiskit
+    QuantumCircuit = None
+    transpile = None
+try:
+    from qiskit_aer import Aer
+except ImportError:  # optional dependency: pip install qiskit-aer
+    Aer = None
+try:
+    from qiskit.circuit import Parameter
+except ImportError:  # optional dependency: pip install qiskit
+    Parameter = None
+try:
+    from qiskit.circuit.library import ZZFeatureMap, RealAmplitudes
+except ImportError:  # optional dependency: pip install qiskit
+    ZZFeatureMap = None
+    RealAmplitudes = None
 from qiskit_machine_learning.algorithms import VQC
-from qiskit.algorithms.optimizers import COBYLA
-import numpy as np
+try:
+    from qiskit.algorithms.optimizers import COBYLA
+except ImportError:  # optional dependency: pip install qiskit
+    COBYLA = None
+try:
+    import numpy as np
+except ImportError:  # optional dependency: pip install numpy
+    np = None
 
 class QuantumMotionEncoder:
     def __init__(self, n_qubits):

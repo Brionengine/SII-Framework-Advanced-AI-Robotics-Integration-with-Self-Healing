@@ -97,3 +97,9 @@ Reach out via [briontechengineer@gmail.com](mailto:briontechengineer@gmail.com).
 3. Make your changes and commit (`git commit -m 'Add some feature'`).
 4. Push to the branch (`git push origin feature/your-feature`).
 5. Open a pull request.
+
+## Optional dependencies
+
+This repository imports without the heavy scientific stack (numpy, torch,
+tensorflow, qiskit, cirq, ...). Clone it and run it; install only the packages
+the parts you actually use need. See [OPTIONAL_DEPENDENCIES.md](OPTIONAL_DEPENDENCIES.md).

@@ -3,9 +3,14 @@
 Hardware-Level AI Blocker - Physical and system-level prevention of AI code execution
 Implements multiple layers of protection to ensure AI cannot run on robot hardware. To help ensure safety for A.I.
 """
+from __future__ import annotations
+
 
 import os
-import psutil
+try:
+    import psutil
+except ImportError:  # optional dependency: pip install psutil
+    psutil = None
 import hashlib
 import time
 import signal

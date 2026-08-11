@@ -1,6 +1,18 @@
-from qiskit import QuantumCircuit, transpile
-from qiskit_aer import Aer
-import numpy as np
+from __future__ import annotations
+
+try:
+    from qiskit import QuantumCircuit, transpile
+except ImportError:  # optional dependency: pip install qiskit
+    QuantumCircuit = None
+    transpile = None
+try:
+    from qiskit_aer import Aer
+except ImportError:  # optional dependency: pip install qiskit-aer
+    Aer = None
+try:
+    import numpy as np
+except ImportError:  # optional dependency: pip install numpy
+    np = None
 
 class QBERC:
     def __init__(self):

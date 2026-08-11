@@ -1,6 +1,18 @@
-import numpy as np
-from qiskit import QuantumCircuit, transpile
-from qiskit_aer import Aer
+from __future__ import annotations
+
+try:
+    import numpy as np
+except ImportError:  # optional dependency: pip install numpy
+    np = None
+try:
+    from qiskit import QuantumCircuit, transpile
+except ImportError:  # optional dependency: pip install qiskit
+    QuantumCircuit = None
+    transpile = None
+try:
+    from qiskit_aer import Aer
+except ImportError:  # optional dependency: pip install qiskit-aer
+    Aer = None
 
 class QNEKE:
     def __init__(self, n_joints):

@@ -1,6 +1,18 @@
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad, unpad
-from Crypto.Random import get_random_bytes
+from __future__ import annotations
+
+try:
+    from Crypto.Cipher import AES
+except ImportError:  # optional dependency: pip install pycryptodome
+    AES = None
+try:
+    from Crypto.Util.Padding import pad, unpad
+except ImportError:  # optional dependency: pip install pycryptodome
+    pad = None
+    unpad = None
+try:
+    from Crypto.Random import get_random_bytes
+except ImportError:  # optional dependency: pip install pycryptodome
+    get_random_bytes = None
 
 # Generate a random key for AES-256
 key = get_random_bytes(32)  # 32 bytes = 256 bits
